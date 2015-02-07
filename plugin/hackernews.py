@@ -7,7 +7,7 @@
 #  Author:  ryanss <ryanssdev@icloud.com>
 #  Website: https://github.com/ryanss/vim-hackernews
 #  License: MIT (see LICENSE file)
-#  Version: 0.1
+#  Version: 0.1.1
 
 
 import HTMLParser
@@ -60,10 +60,15 @@ def hacker_news():
     for i, item in enumerate(news1+news2):
         if 'title' not in item:
             continue
-        line = "%s%d. %s (%s) [%d]"
-        line %= (" " if i+1 < 10 else "", i+1, item['title'],
-                 item['domain'], item['id'])
-        bwrite(line)
+        if 'domain' in item:
+            line = "%s%d. %s (%s) [%d]"
+            line %= (" " if i+1 < 10 else "", i+1, item['title'],
+                     item['domain'], item['id'])
+            bwrite(line)
+        else:
+            line = "%s%d. %s [%d]"
+            line %= (" " if i+1 < 10 else "", i+1, item['title'], item['id'])
+            bwrite(line)
         if item['type'] == "link":
             line = "%s%d points by %s %s | %d comments [%s]"
             line %= (" "*4, item['points'], item['user'], item['time_ago'],
